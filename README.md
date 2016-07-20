@@ -39,9 +39,9 @@ across domain.
 Copyright © 2016 [MetroWind](https://github.com/MetroWind) <chris.corsair@gmail.com>
 
 This work is free. You can redistribute it and/or modify it under the
-terms of the <img
-src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl.svg"
-style="max-height: 1em;" /> Do What The Fuck You Want To Public
+terms of the
+![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-2.png)
+Do What The Fuck You Want To Public
 License, Version 2, as published by Sam Hocevar.
 
                DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
