@@ -32,3 +32,27 @@ The program is purely JavaScript written with
 Sadly if you host this program on a sever, it won’t work.  Because
 [Wikia](http://wikia.com/) doesn’t seem to support `XMLHttpRequest`
 across domain.
+
+# Copying
+
+Copyright © 2016 [MetroWind](https://github.com/MetroWind) <chris.corsair@gmail.com>
+
+This work is free. You can redistribute it and/or modify it under the
+terms of the <img
+src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl.svg"
+style="max-height: 1em;" /> Do What The Fuck You Want To Public
+License, Version 2, as published by Sam Hocevar.
+
+               DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                       Version 2, December 2004
+   
+    Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+   
+    Everyone is permitted to copy and distribute verbatim or modified
+    copies of this license document, and changing it is allowed as long
+    as the name is changed.
+   
+               DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+      TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+   
+     0. You just DO WHAT THE FUCK YOU WANT TO.
