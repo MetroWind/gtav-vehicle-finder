@@ -4,8 +4,9 @@
 
 So, [Simeon](http://gta.wikia.com/wiki/Simeon_Car_Export_Requests) is
 asking you to find one of his five cars, and you are poor and will do
-anything for 10k...  What would you do?  Would you search for car
-names on Google one by one, and put them in 5 browser tabs?
+anything for 10k...  But of course you don’t memorize the shape of all
+370+ vehicles in your human mind.  Would you then search for car names
+on Google one by one, and put them in five browser tabs?
 
 But that’s lame!  You don’t want to constantly switch browser tabs!
 It’s time to use this vehicle finder!
@@ -30,7 +31,7 @@ The program is purely JavaScript written with
 [React](https://facebook.github.io/react/).  Styling is done with
 [Bootstrap](http://getbootstrap.com).
 
-Sadly if you host this program on a sever, it won’t work.  Because
+Sadly if you host this program on a server, it won’t work.  Because
 [Wikia](http://wikia.com/) doesn’t seem to support `XMLHttpRequest`
 across domain.
 
