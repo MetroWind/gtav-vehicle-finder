@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GTA V Vehicle Finder</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- React -->
+    <script src="https://fb.me/react-15.2.1.min.js"></script>
+    <script src="https://fb.me/react-dom-15.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+
+    <style>
+     body
+     {
+         background-color: #f5f4f0;
+         color: #110600;
+     }
+
+     a
+     {
+         text-decoration: none;
+         color: #1abc9c;
+     }
+
+     a:hover
+     {
+         text-decoration: none;
+         color: #f5f4f0;
+         background-color: #1abc9c;
+     }
+
+     div#Canvas
+     {
+         margin-top: 30px;
+     }
+
+     h1
+     {
+         text-align: center;
+         margin-top: 50px;
+     }
+
+     input#SearchBar
+     {
+         text-align: center;
+     }
+     
+     div.Car
+     {
+         margin-top: 20px;
+         text-align: center;
+     }
+
+     div.Car > img
+     {
+         width: 100%;
+     }
+
+     footer
+     {
+         padding-top: 1em;
+         padding-bottom: 1em;
+         margin-top: 30px;
+         background-color: #bab5ab;
+         color: #f5f4f0;
+         text-align: center;
+     }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <h1 class="row">GTA V/Online Vehicle Finder</h1>
+      <div id="Canvas"></div>
+      <footer class="row">
+        <div class="col-md-12">Pictures are from <a href="http://gta.wikia.com/wiki/Vehicles_in_GTA_V">GTA Wiki</a>.</div>
+      </footer>
+    </div>
+  </body>
+  <script>
+   var UrlRoot = "http://gta.wikia.com";
+   
+   function getHtml(url, onGet)
+   /* onGet takes the document as arg. */
+   {
+       var Request = new XMLHttpRequest();
+       Request.onload = function()
+       {
+           onGet(this.responseXML);
+       }
+       Request.open("GET", url, true);
+       Request.responseType = "document";
+       Request.send();
+   }
+
+   var CarInfo = function(link_node)
+   {
+       this.PicUrl = "";
+       this.ThumbUrl = "";
+       if(link_node == null)
+           {
+               this.Name = "";
+               this.Url = "";
+           }
+       else
+           {
+               this.Name = link_node.textContent;
+               this.Url = link_node.getAttribute("href");
+               if(this.Url[0] == '/')
+                   {
+                       this.Url = UrlRoot + this.Url;
+                   }
+           }
+   }
+   CarInfo.prototype.getPicUrl = function(on_get)
+   /* on_get takes the CarInfo object as arg. */
+   {
+       var ThisCar = this;
+       if(ThisCar.PicUrl != "")
+           {
+               on_get(ThisCar);
+               return;
+           }
+       
+       getHtml(ThisCar.Url, function(doc) {
+           Imgs = doc.querySelectorAll(
+               "div#mw-content-text > aside > figure.pi-image > a.image");
+           if(Imgs.length > 1)
+               {
+                   for(var Img of Imgs)
+                       {
+                           var Url = Img.getAttribute("href");
+                           if(Url.search("GTAV") != -1)
+                               {
+                                   ThisCar.PicUrl = Url;
+                                   ThisCar.ThumbUrl = Img.querySelector("img.pi-image-thumbnail").getAttribute("src");
+                               }
+                       }
+               }
+           else
+               {
+                   ThisCar.PicUrl = Imgs[0].getAttribute("href");
+                   ThisCar.ThumbUrl = Imgs[0].querySelector("img.pi-image-thumbnail").getAttribute("src");
+               }
+           on_get(ThisCar);
+       });
+   }
+
+   function getCars(on_get)
+   {
+       getHtml("http://gta.wikia.com/wiki/Vehicles_in_GTA_V", function(doc) {
+           var CarNameTab = doc.querySelectorAll(
+               "div#mw-content-text > table.wikitable:nth-of-type(2)")[0];
+           var CarNodes = CarNameTab.querySelectorAll("tbody > tr > td > ul > li > a");
+
+           var Cars = [];
+           for(var CarNode of CarNodes)
+               {
+                   var Car = new CarInfo(CarNode);
+                   Cars.push(Car);
+               }
+           on_get(Cars);
+       });
+   }
+  </script>
+  <Script type="text/babel">
+   var CarShow = React.createClass({
+       getInitialState: function() {
+           var Ctrl = this;
+           Ctrl.props.car.getPicUrl(function(car) {
+               Ctrl.setState({pic_url: car.ThumbUrl});
+           });
+           return {pic_url: Ctrl.props.car.ThumbUrl};
+       },
+       
+       render: function() {
+           return (<div className="Car col-md-2 col-sm-4">
+             <div className="CarName"><a href={this.props.car.Url}>{this.props.car.Name}</a></div>
+             <img src={this.state.pic_url} />
+           </div>);
+       }
+   });
+
+   var CarList = React.createClass({
+       render: function() {
+           var Nodes = [];
+           for(var ThisCar of this.props.cars)
+               {
+                   Nodes.push(<CarShow car={ThisCar} key={ThisCar.Name} />);
+               }
+           return <div className="CarList row">{Nodes}</div>;
+       }
+   });
+
+   var CarListWrapper = React.createClass({
+       getInitialState: function() {
+           return {cars: this.props.cars};
+       },
+
+       onSearchChange: function(event){
+           var Filter = event.target.value;
+           console.log(Filter);
+           if(Filter == "")
+               {
+                   console.log("Ding!!!");
+                   this.setState({cars: this.props.cars});
+                   return;
+               }
+           var SearchTerms = Filter.split(' ');
+           var FilteredCars = [];
+           for(var ThisCar of this.props.cars)
+               {
+                   for(var Term of SearchTerms)
+                       {
+                           if(Term == "")
+                               {
+                                   continue;
+                               }
+                           if(ThisCar.Name.toLowerCase().search(Term) != -1)
+                               {
+                                   FilteredCars.push(ThisCar);
+                                   break;
+                               }
+                       }
+               }
+           this.setState({cars: FilteredCars});
+       },
+       
+       render: function() {
+           return (<div className="row">
+             <div className="row">
+               <input type="text" name="fname" onChange={this.onSearchChange}
+                      className="col-md-6 col-md-offset-3" id="SearchBar"
+                      placeholder="Space-separated search terms.  Space means OR." />
+             </div>
+             <CarList cars={this.state.cars} />
+           </div>);
+       }
+   });
+   
+   getCars(function(cars) {
+       ReactDOM.render(<CarListWrapper cars={cars} />,
+                       document.getElementById('Canvas'));
+   });
+  </script>
+</html>
