@@ -12,8 +12,9 @@ It’s time to use this vehicle finder!
 
 # Usage
 
-Download the HTML file to you machine, and open it in your browser.
-Type in some keywords.
+Download the
+[HTML file](https://github.com/MetroWind/gtav-vehicle-finder/raw/master/gtav-vehicle-finder.html)
+to you machine, and open it in your browser.  Type in some keywords.
 
 # Technical stuff
 
