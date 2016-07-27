@@ -81,8 +81,8 @@
     </div>
   </body>
   <script>
-   var UrlRoot = "http://gta.wikia.com";
-   
+   var UrlRoot = "https://cors-anywhere.herokuapp.com/http://gta.wikia.com";
+
    function getHtml(url, onGet)
    /* onGet takes the document as arg. */
    {
@@ -91,8 +91,9 @@
        {
            onGet(this.responseXML);
        }
-       Request.open("GET", url, true);
+       Request.open("GET", url);
        Request.responseType = "document";
+       Request.setRequestHeader("x-requested-with", "null");
        Request.send();
    }
 
@@ -151,7 +152,7 @@
 
    function getCars(on_get)
    {
-       getHtml("http://gta.wikia.com/wiki/Vehicles_in_GTA_V", function(doc) {
+       getHtml(UrlRoot + "/wiki/Vehicles_in_GTA_V", function(doc) {
            var CarNameTab = doc.querySelectorAll(
                "div#mw-content-text > table.wikitable:nth-of-type(2)")[0];
            var CarNodes = CarNameTab.querySelectorAll("tbody > tr > td > ul > li > a");
@@ -233,7 +234,7 @@
            return (<div className="row">
              <div className="row">
                <input type="text" name="fname" onChange={this.onSearchChange}
-                      className="col-md-6 col-md-offset-3" id="SearchBar"
+                      className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12" id="SearchBar"
                       placeholder="Space-separated search terms.  Space means OR." />
              </div>
              <CarList cars={this.state.cars} />

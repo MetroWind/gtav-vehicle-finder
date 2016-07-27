@@ -19,6 +19,10 @@ to you machine, and open it in your browser.  Type in some keywords.
 
 # Technical stuff
 
+Note that `https://cors-anywhere.herokuapp.com/` is used to relay
+`XMLHttpRequest`s.  *You should set up your own CORS Anywhere server*,
+and change the `UrlRoot` variable in this program!
+
 When you open the page, you browser may be stuck for a little while,
 because it’s downloading 370+ (small) images from the
 [GTA Wiki](http://gta.wikia.com/wiki/Vehicles_in_GTA_V), and it may
@@ -30,10 +34,6 @@ and use them to filter the cars.
 The program is purely JavaScript written with
 [React](https://facebook.github.io/react/).  Styling is done with
 [Bootstrap](http://getbootstrap.com).
-
-Sadly if you host this program on a server, it won’t work.  Because
-[Wikia](http://wikia.com/) doesn’t seem to support `XMLHttpRequest`
-across domain.
 
 # Copying
 
